@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = ""
+  url      = env("DATABASE_URL")
 }
 
 
@@ -21,4 +21,36 @@ model Users{
   email     String   @unique
   createdAt DateTime @default(now())
   token     String?   
+  friendRequestsSent    FriendRequest[] @relation("SentFriendRequests")
+  friendRequestsReceived FriendRequest[] @relation("ReceivedFriendRequests")
+   friendshipsInitiated  Friendship[]     @relation("UserFriendInitiated")
+  friendshipsReceived   Friendship[]     @relation("UserFriendReceived")
+}
+
+model Friendship{
+  id        Int    @id @default(autoincrement())
+  user_id1   Int  
+  user_id2   Int
+  createdAt DateTime @default(now())
+
+  user1         Users     @relation("UserFriendInitiated", fields: [user_id1], references: [id])
+  user2         Users     @relation("UserFriendReceived", fields: [user_id2], references: [id])
+
+  @@unique([user_id1, user_id2])
+}
+
+
+model FriendRequest {
+  id              Int      @id @default(autoincrement())
+  requester_id    Int
+  requestee_id    Int
+  status          String   @default("pending") @db.VarChar(20)
+  created_at      DateTime @default(now())
+  
+ 
+  requester       Users     @relation("SentFriendRequests", fields: [requester_id], references: [id])
+  requestee       Users     @relation("ReceivedFriendRequests", fields: [requestee_id], references: [id])
+
+  @@unique([requester_id, requestee_id])
+  @@index([requester_id, requestee_id])
 }
