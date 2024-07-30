@@ -7,7 +7,8 @@ const jwtverify=(req,res,next)=>{
    const result =jwt.verify(token,"secret");
     if(!result)
         res.send("Uncorrect token");
-    req.body.id=jwt.decode(token).payload.id;
+    console.log(jwt.decode(token))
+    req.body.id=jwt.decode(token).userId;
     next();
     // next();
 }

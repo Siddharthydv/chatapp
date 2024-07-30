@@ -8,8 +8,8 @@ mainrouter.post('/signup',signup);
 mainrouter.post('/verify-token',jwtverify);
 mainrouter.post('/login',login);
 mainrouter.use('/user',jwtverify,userrouter);
-mainrouter.post('/check',(req,res)=>{
-    req.body.id=req.body.mssg;
-    res.send(req.body.id);
-})
+// mainrouter.post('/check',(req,res)=>{
+//     req.body.id=req.body.mssg;
+//     res.send(req.body.id);
+// })
 export default mainrouter

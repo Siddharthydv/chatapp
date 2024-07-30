@@ -33,8 +33,8 @@ model Friendship{
   user_id2   Int
   createdAt DateTime @default(now())
 
-  user1         Users     @relation("UserFriendInitiated", fields: [user_id1], references: [id])
-  user2         Users     @relation("UserFriendReceived", fields: [user_id2], references: [id])
+  user1         Users     @relation("UserFriendInitiated", fields: [user_id1], references: [id],onDelete:Cascade)
+  user2         Users     @relation("UserFriendReceived", fields: [user_id2], references: [id],onDelete:Cascade)
 
   @@unique([user_id1, user_id2])
 }
@@ -48,8 +48,8 @@ model FriendRequest {
   created_at      DateTime @default(now())
   
  
-  requester       Users     @relation("SentFriendRequests", fields: [requester_id], references: [id])
-  requestee       Users     @relation("ReceivedFriendRequests", fields: [requestee_id], references: [id])
+  requester       Users     @relation("SentFriendRequests", fields: [requester_id], references: [id],onDelete:Cascade)
+  requestee       Users     @relation("ReceivedFriendRequests", fields: [requestee_id], references: [id],onDelete:Cascade)
 
   @@unique([requester_id, requestee_id])
   @@index([requester_id, requestee_id])
