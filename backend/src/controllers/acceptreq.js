@@ -1,6 +1,6 @@
 import prisma from "../prisma/prismaclient.js";
-const acceptreq=async(req,res)=>{
-    const requestid=req.body.requestid
+const acceptreq=async(requestId)=>{
+    const requestid=requestId;
     const request=await prisma.friendRequest.findUnique({
         where:{id:requestid}
     })
@@ -15,6 +15,6 @@ const acceptreq=async(req,res)=>{
     await prisma.friendRequest.delete({
         where:{id:requestid}
     });
-    res.status(200);
+    // res.status(200);
 }
 export default acceptreq;

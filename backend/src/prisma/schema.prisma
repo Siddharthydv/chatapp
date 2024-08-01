@@ -21,10 +21,12 @@ model Users{
   email     String   @unique
   createdAt DateTime @default(now())
   token     String?   
-  friendRequestsSent    FriendRequest[] @relation("SentFriendRequests")
-  friendRequestsReceived FriendRequest[] @relation("ReceivedFriendRequests")
-   friendshipsInitiated  Friendship[]     @relation("UserFriendInitiated")
-  friendshipsReceived   Friendship[]     @relation("UserFriendReceived")
+  friendRequestsSent     FriendRequest[]    @relation("SentFriendRequests")
+  friendRequestsReceived FriendRequest[]    @relation("ReceivedFriendRequests")
+  friendshipsInitiated   Friendship[]       @relation("UserFriendInitiated")
+  friendshipsReceived    Friendship[]       @relation("UserFriendReceived")
+  Sender                 Message[]          @relation("messagesender")
+  Receiver               Message[]          @relation("messagereceiver")
 }
 
 model Friendship{
@@ -53,4 +55,14 @@ model FriendRequest {
 
   @@unique([requester_id, requestee_id])
   @@index([requester_id, requestee_id])
+}
+model Message {
+  id         Int       @id @default(autoincrement())
+  content    String
+  senderId   Int
+  recipientUserId  Int? // Nullable if message is sent to a single user
+  createdAt DateTime  @default(now())
+
+  sender         Users     @relation("messagesender",fields: [senderId], references: [id], onDelete: Cascade)
+  recipientUser  Users?     @relation("messagereceiver",fields: [recipientUserId], references: [id], onDelete: Cascade)
 }
