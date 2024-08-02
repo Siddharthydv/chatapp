@@ -6,19 +6,19 @@ export const login=async (req,res)=>{
     const password=req.body.password;
     const user=await prisma.users.findUnique({where:{email:email}});
     if(!user){
-        res.send("userdoesnotexist");return;}
+        res.send(false);return;}
     //passwordcheck
     const result=await bcrypt.compare(password,user.password)
-    if(!result) res.send("password incorrect");
+    if(!result){ res.send(false); return;}
     //generating token
-    const token=jwt.sign({email:email,userId:user.id},"secret")
+    const token=jwt.sign({email:email,userId:user.id,username:user.username},"secret")
         try{
         await prisma.users.update({
             where:{email:email},
             data:{token:token}
         })
-        res.cookie('authToken', token,{ sameSite: 'Strict', // Helps prevent CSRF attacks
-            maxAge: 3600000 })// Cookie expiration time in milliseconds (1 hour)})
-        res.send("done")
+        res.cookie('authToken', token,{ sameSite:'Lax', secure:false,httpOnly: true,//Helps prevent CSRF attacks
+            expires: new Date(Date.now() + 900000) })// Cookie expiration time in milliseconds (1 hour)})
+        res.send(true)
         }catch(error){res.send(error)};
 }

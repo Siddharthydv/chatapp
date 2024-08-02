@@ -21,7 +21,7 @@
                 password:hashedpassword,
             }
         })
-        res.send(newUser)
+        res.send(newUser.username)
     }catch(error){console.log("error in password hasing section="+error)}
 }
 export default signup

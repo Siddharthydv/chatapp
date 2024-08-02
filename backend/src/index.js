@@ -3,7 +3,7 @@ import http from "http"
 import { WebSocketServer } from "ws";
 import mainrouter from "./routes/mainrouter.js"
 import cors from 'cors'
-import cookieparser from "cookie-parser"
+import cookieParser from "cookie-parser"
 import acceptreq from "./controllers/acceptreq.js";
 import webcheck from "./webcheck.js";
 import jwt from "jsonwebtoken"
@@ -16,12 +16,11 @@ const app=express();
 app.use(cors({
     origin: 'http://localhost:5173', // Allow only this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+    // allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true, // Allow credentials (cookies, authorization headers)
-    exposedHeaders: ['Content-Length', 'X-Custom-Header'], // Expose custom headers
-    maxAge: 86400 // Cache preflight responses for 1 day
+    // exposedHeaders: ['Content-Length', 'X-Custom-Header'], // Expose custom headers
   }));
-app.use(cookieparser())
+app.use(cookieParser())
 app.use(express.json())
 app.use("/",mainrouter)
 const Server=http.createServer(app);

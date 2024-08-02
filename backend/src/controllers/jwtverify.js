@@ -1,15 +1,21 @@
 import jwt from "jsonwebtoken"
 const jwtverify=(req,res,next)=>{
-   const token=req.cookies['Cookie_1']
-   if(!token)
-    res.send("token not present");
-
+   const token=req.cookies['authToken']
+   console.log("token="+token)
+   if(!token){
+    res.send(false); return ;}
+   try{
    const result =jwt.verify(token,"secret");
-    if(!result)
-        res.send("Uncorrect token");
-    console.log(jwt.decode(token))
+   console.log(jwt.decode(token))
+    if(result){
     req.body.id=jwt.decode(token).userId;
+    res.send(true)
     next();
+    }
+   }catch(error){
+        res.send(false);}
+    //  res.send(true);
+    
     // next();
 }
 

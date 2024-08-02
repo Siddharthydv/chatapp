@@ -3,9 +3,12 @@ import axios from 'axios'
 import { useDispatch } from "react-redux";
 import { update } from "../store/userslice.js";
 import { useForm} from "react-hook-form"
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 export default function LoginForm()
 {
     const dispatch=useDispatch();
+    const navigate=useNavigate()
     const {register,handleSubmit}=useForm();
     const onSubmit=async(data)=>{
         const response = await axios.post('http://localhost:3000/login',{
@@ -28,7 +31,7 @@ export default function LoginForm()
             </div>
             <div className=" rounded-lg flex flex-col  items-center border-2 border-solid h-2/6 space-y-2">
             <button type='submit' className="rounded-full border-2 border-solid border-green-700 w-2/5 bg-green-400"><h6 className="text-white">Submit</h6></button>
-            <h6 className="font-mono font-extralight">Dont't have an account?SIGN UP</h6>
+            <h6 className="font-mono font-extralight">Dont't have an account? <Link to="/signup">Signup</Link></h6>
             </div>
         </div>
        </div>
