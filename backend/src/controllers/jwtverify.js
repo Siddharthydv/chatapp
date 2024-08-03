@@ -9,7 +9,7 @@ const jwtverify=(req,res,next)=>{
    const decoded=jwt.decode(token);
    console.log(decoded)
     if(result){
-    res.send(decoded)//for verification done by initial load of app
+    // res.send(decoded)//for verification done by initial load of app
     req.body.id=decoded.userId;//incase this file is used as a middleware
     next();
     }

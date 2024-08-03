@@ -17,8 +17,8 @@ export const login=async (req,res)=>{
             where:{email:email},
             data:{token:token}
         })
-        res.cookie('authToken', token,{ sameSite:'Lax', secure:false,httpOnly: true,//Helps prevent CSRF attacks
-            expires: new Date(Date.now() + 900000) })// Cookie expiration time in milliseconds (1 hour)})
+        res.cookie('authToken', token,{ sameSite:'Lax', secure:false,httpOnly: false,//Helps prevent CSRF attacks
+            expires: new Date(Date.now() + 90000000) })// Cookie expiration time in milliseconds (1 hour)})
         res.send({userId:user.id,username:user.username})
         }catch(error){res.send(error)};
 }

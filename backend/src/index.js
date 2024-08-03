@@ -27,24 +27,27 @@ const Server=http.createServer(app);
 const wss=new WebSocketServer({server:Server});
 
 wss.on('connection',(ws,req)=>{
-            // const token=req.cookies['Cookie_1']
-            // if(!token)
-            //  ws.send("token absent")
-        
-            // const result =jwt.verify(token,"secret");
-            //  if(!result)
-            //      res.send("Uncorrect token");
+    //verification
+            const token=req.headers.cookie['authToken']
+            if(!token)
+             ws.send("token absent")
+            try{
+            const result =jwt.verify(token,"secret");
+             if(!result)
+                 res.send("Uncorrect token");
             //  console.log(jwt.decode(token))
-            //  ws.userId=jwt.decode(token).userId;
-
-        ws.userId=3;
+             ws.userId=jwt.decode(token).userId;
+            }catch(error){ws.send('invalid token')}  
+    
+    //sockets 
     ws.on('message',(message)=>{
         const parsedmessage=JSON.parse(message);
-
+        console.log(parsedmessage)
         if(parsedmessage.type==="logout")
         {
-           const result= logout(ws.userId);
-           ws.send(result);
+            logout(ws.userId=1).then((result)=>{
+                 ws.close()});
+           
         }
         if(parsedmessage.type==="sendrequest")
         {

@@ -1,11 +1,10 @@
 import prisma from "../prisma/prismaclient.js";
  const logout=async (userId)=>{
-    const userid=userId;
     //clearing token
     await prisma.users.update({
-        where:{id:userid},
+        where:{id:userId},
         data:{token:null}
     })
-    return "true"
+    return "loggedout"
 }
 export default logout
