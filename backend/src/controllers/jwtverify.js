@@ -6,10 +6,11 @@ const jwtverify=(req,res,next)=>{
     res.send(false); return ;}
    try{
    const result =jwt.verify(token,"secret");
-   console.log(jwt.decode(token))
+   const decoded=jwt.decode(token);
+   console.log(decoded)
     if(result){
-    req.body.id=jwt.decode(token).userId;
-    res.send(true)
+    res.send(decoded)//for verification done by initial load of app
+    req.body.id=decoded.userId;//incase this file is used as a middleware
     next();
     }
    }catch(error){

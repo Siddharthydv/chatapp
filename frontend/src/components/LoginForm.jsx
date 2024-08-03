@@ -5,6 +5,7 @@ import { update } from "../store/userslice.js";
 import { useForm} from "react-hook-form"
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { login } from "../store/authstatus.js";
 export default function LoginForm()
 {
     const dispatch=useDispatch();
@@ -16,6 +17,13 @@ export default function LoginForm()
             password:data.password
         },{withCredentials:true});
         console.log(response)
+        const userdata=response.data
+        if(userdata)
+        {
+            dispatch(login());
+            dispatch(update({userId:userdata.userId,username:userdata.username}))
+            navigate('../home')
+        }
         }
     return (
     <form onSubmit={handleSubmit(onSubmit)}>

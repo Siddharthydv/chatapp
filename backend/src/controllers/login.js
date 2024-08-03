@@ -19,6 +19,6 @@ export const login=async (req,res)=>{
         })
         res.cookie('authToken', token,{ sameSite:'Lax', secure:false,httpOnly: true,//Helps prevent CSRF attacks
             expires: new Date(Date.now() + 900000) })// Cookie expiration time in milliseconds (1 hour)})
-        res.send(true)
+        res.send({userId:user.id,username:user.username})
         }catch(error){res.send(error)};
 }
