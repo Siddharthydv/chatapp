@@ -28,16 +28,17 @@ const wss=new WebSocketServer({server:Server});
 
 wss.on('connection',(ws,req)=>{
     //verification
-            const token=req.headers.cookie['authToken']
-            if(!token)
-             ws.send("token absent")
-            try{
-            const result =jwt.verify(token,"secret");
-             if(!result)
-                 res.send("Uncorrect token");
+            // const token=req.headers.cookie['authToken']
+            // console.log(token)
+            // if(!token)
+            //  ws.send("token absent")
+            // try{
+            // const result =jwt.verify(token,"secret");
+            //  if(!result)
+            //      res.send("Uncorrect token");
             //  console.log(jwt.decode(token))
-             ws.userId=jwt.decode(token).userId;
-            }catch(error){ws.send('invalid token')}  
+            //  ws.userId=jwt.decode(token).userId;
+            // }catch(error){ws.send('invalid token')}  
     
     //sockets 
     ws.on('message',(message)=>{
@@ -62,16 +63,6 @@ wss.on('connection',(ws,req)=>{
             const recipientId=parsedmessage.recipientId;
             const content=parsedmessage.content;
             messagehandler(ws.userId,recipientId,content)
-        }
-        if(parsedmessage.type==="getmessages")
-        {
-            const user2_id=parsedmessage.user2_id;
-            getmessages(ws.userId,user2_id).then((docs)=>{
-                ws.send(docs[0].content);
-            })
-        //     const docs=JSON.stringify(getmessages(ws.userId,user2_id))
-        //     console.log(check)
-        //    ws.send(docs)
         }
             // webcheck(decmessage);
         // ws.send(decmessage.content)

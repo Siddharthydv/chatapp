@@ -1,5 +1,9 @@
 import prisma from "../prisma/prismaclient.js";
-const getmessages=async (user1_id,user2_id)=>{
+const getmessages=async (req,res)=>{
+  const user1_id=req.body.id;
+  const user2_id=Number(req.params.friendid);
+  // console.log(user1_id)
+  // console.log(user2_id)
     const messagedocs=await prisma.message.findMany({
         where: {
             OR: [
@@ -18,8 +22,8 @@ const getmessages=async (user1_id,user2_id)=>{
             ],
         },
     })
-    console.log(messagedocs)
-    return messagedocs;
+    console.log((messagedocs))
+    res.json(messagedocs);
 }
 
 export default getmessages;

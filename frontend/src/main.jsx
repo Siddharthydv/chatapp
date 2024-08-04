@@ -14,6 +14,7 @@ import Sidebar from './components/sidebar.jsx'
 import Menubar from './components/menubar.jsx'
 import Home from './components/home.jsx'
 import Chatpage from './components/chatpage.jsx'
+import Friendlist from './components/friendlist.jsx'
 const router=createBrowserRouter([
   {
     path:'/',
@@ -35,9 +36,9 @@ const router=createBrowserRouter([
     children:[
       {
         path:'friends',
-        element:<Menubar/>,
+        element:<Friendlist/>,
         children:[{
-          path:'chatpage',
+          path:"chatpage/:friendid",
           element:<Chatpage/>
                   }
                   ]
