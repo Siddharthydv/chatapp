@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-const jwtverify=(req,res,next)=>{
+const appjwt=(req,res,next)=>{
    const token=req.cookies['authToken']
    console.log("token="+token)
    if(!token){
@@ -8,9 +8,8 @@ const jwtverify=(req,res,next)=>{
    const result =jwt.verify(token,"secret");
    const decoded=jwt.decode(token);
    console.log(decoded)
-    if(result){//for verification done by initial load of app
-    req.body.id=decoded.userId;//incase this file is used as a middleware
-    next();
+    if(result){
+    res.send(decoded)//for verification done by initial load of app
     }
    }catch(error){
         res.send(false);}
@@ -18,5 +17,4 @@ const jwtverify=(req,res,next)=>{
     
     // next();
 }
-
-export default jwtverify
+export default appjwt

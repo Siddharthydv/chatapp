@@ -1,24 +1,26 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { WebSocketServer } from "ws";
 import axios from "axios"
+import { update } from "../store/userslice.js";
+import {ws} from './home.jsx'
 export default function Sidebar()
 {
   const navigate=useNavigate();
+  const dispatch=useDispatch();
   // const userId=useSelector(state=>state.userdetails.userId)
   const logout=async ()=>{
-    const ws=new WebSocket('ws://localhost:3000');
-    ws.onopen=async ()=>{
+    // const ws=new WebSocket('ws://localhost:3000');
+    
       console.log('open');
       const message=JSON.stringify({type:"logout"})
       ws.send(message)
-      ws.close()
-    }
-    ws.onclose=()=>{
       const expires = 'expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = `authToken=; ${expires};`;
+      document.cookie = "authToken"+`=;${expires}`;
+      console.log(document.cookie)
+      dispatch(update({userId:"",username:''}))
       navigate('../')
-    }
+    
   }
   const friendlist=async()=>{
     const list=await axios.get('http://localhost:3000/user/getfriends',{withCredentials:true})
@@ -45,17 +47,17 @@ export default function Sidebar()
           </svg>
         </li>
         <li className="p-5">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 cursor-pointer text-gray-500 transition-all hover:text-blue-600">
+       <Link to='requests'>   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 cursor-pointer text-gray-500 transition-all hover:text-blue-600">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-          </svg>
+          </svg></Link>
         </li>
-        <li className="p-5">
-          <svg onClick={friendlist} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 cursor-pointer text-gray-500 transition-all hover:text-blue-600">
+        <li className="p-5 bg-slate-500">
+         <Link to='search'> <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 cursor-pointer text-gray-500 transition-all hover:text-blue-600">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-          </svg>
+          </svg></Link>
         </li>
         <li className="p-5">
-        <Link to='/home'>  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 cursor-pointer text-gray-500 transition-all hover:text-blue-600">
+        <Link to='/home'>  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM609.3 512l-137.8 0c5.4-9.4 8.6-20.3 8.6-32l0-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2l61.4 0C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z"/>
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
           </svg></Link>
         </li>

@@ -7,6 +7,7 @@ export const userSlice=createSlice({
     },
     reducers:{
         update:(state,action)=>{
+            console.log(action.payload)
             state.userId=action.payload.userId
             state.username=action.payload.username;
         }

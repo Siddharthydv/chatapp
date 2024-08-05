@@ -12,6 +12,7 @@ import logout from "./controllers/logout.js";
 import sendrequest from "./controllers/sendrequest.js";
 import messagehandler from "./controllers/messagehandler.js";
 import getmessages from "./controllers/getmessages.js";
+import { hasSubscribers } from "diagnostics_channel";
 const app=express();
 app.use(cors({
     origin: 'http://localhost:5173', // Allow only this origin
@@ -25,29 +26,32 @@ app.use(express.json())
 app.use("/",mainrouter)
 const Server=http.createServer(app);
 const wss=new WebSocketServer({server:Server});
-
+const Hashmap=new Map();
 wss.on('connection',(ws,req)=>{
     //verification
-            // const token=req.headers.cookie['authToken']
-            // console.log(token)
-            // if(!token)
-            //  ws.send("token absent")
-            // try{
-            // const result =jwt.verify(token,"secret");
-            //  if(!result)
-            //      res.send("Uncorrect token");
-            //  console.log(jwt.decode(token))
-            //  ws.userId=jwt.decode(token).userId;
-            // }catch(error){ws.send('invalid token')}  
-    
+             
     //sockets 
     ws.on('message',(message)=>{
+        const token=(req.headers.cookie.split('='))[1]
+            // console.log(token)
+            if(!token){
+             ws.send("token absent")
+             ws.close()
+            }
+            try{
+            const result =jwt.verify(token,"secret");
+             if(!result)
+                 res.send("Uncorrect token");
+             console.log(jwt.decode(token))
+             ws.userId=jwt.decode(token).userId;
+            }catch(error){ws.send('invalid token')}
+
+            Hashmap.set(ws.userid,ws);
         const parsedmessage=JSON.parse(message);
         console.log(parsedmessage)
         if(parsedmessage.type==="logout")
         {
-            logout(ws.userId=1).then((result)=>{
-                 ws.close()});
+            logout(ws.userId);
            
         }
         if(parsedmessage.type==="sendrequest")
@@ -60,9 +64,12 @@ wss.on('connection',(ws,req)=>{
             }
         if(parsedmessage.type==="message")
         {
+            console.log(ws.userId)
             const recipientId=parsedmessage.recipientId;
             const content=parsedmessage.content;
             messagehandler(ws.userId,recipientId,content)
+            parsedmessage.senderId=ws.userId
+            ws.send(JSON.stringify(parsedmessage))
         }
             // webcheck(decmessage);
         // ws.send(decmessage.content)

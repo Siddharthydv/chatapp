@@ -6,6 +6,13 @@ const acceptreq=async(requestId)=>{
     })
     const user1=request.requester_id;
     const user2=request.requestee_id;
+    // const check=await prisma.friendship.findUnique({
+    //     where:[
+    //         AND:[
+    //             {}
+    //         ]
+    //     ]
+    // })
     const result=await prisma.friendship.create({
         data:{
             user_id1:user1,

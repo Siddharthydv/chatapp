@@ -4,9 +4,11 @@ import axios from "axios"
 import Userchat from "./userchat";
 import Topbar from "./topbar";
 import Bottombar from "./bottombar";
+import chatbg from '../assets/chatpagebg.svg'
+import {ws} from "./home.jsx"
 export default function Chatpage(){
   const {friendid}=useParams();
-  const [messages,setmessages]=useState();
+  const [messages,setmessages]=useState([]);
   useEffect(()=>{
       const getmssg=async()=>{
        return await axios.get(`http://localhost:3000/user/getmessages/${friendid}`,{withCredentials:true})
@@ -15,14 +17,21 @@ export default function Chatpage(){
         setmessages(mssg.data)
       })
     },[])
+    ws.onmessage=(event)=>{
+      const message=JSON.parse(event.data);
+      // console.log(message)
+      if(message.type==='message')
+        setmessages((prev)=>[...prev,message])
+      // console.log(messages)
+    }
     return messages? (
-      <div className="flex flex-grow bg-orange-500 h-full rounded-md"><Link to='../'></Link>
-        <div className="bg-slate-900 flex flex-col flex-grow box-border space-y-1 ">
+      <div className="flex flex-grow  h-full rounded-md"><Link to='../'></Link>
+        <div className=" flex flex-col flex-grow box-border space-y-1 ">
           <Topbar/>
-          <div className="flex flex-col bg-slate-400 h-full w-full overflow-y-scroll">
-       <Userchat messages={messages}/>
+          <div className="flex flex-col  h-full w-full overflow-y-scroll bg-cover bg-black" style={{backgroundImage:`url(${chatbg})`}}>
+       <Userchat mssg={messages}/>
        </div>
-        <Bottombar/>
+        <Bottombar setmessages={setmessages} friendid={friendid}/>
         </div>
       </div>
     

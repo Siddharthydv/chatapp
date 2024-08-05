@@ -1,6 +1,7 @@
 import prisma from "../prisma/prismaclient.js";
 const search=async (req,res)=>{
-    const searched_name=req.body.name;
+    const searched_name=req.params.name;
+    console.log(searched_name)
     const profile=await prisma.users.findUnique({
         where:{username:searched_name},
         select:{

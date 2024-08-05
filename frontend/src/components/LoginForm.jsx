@@ -1,6 +1,6 @@
 import Input from "./Input.jsx";
 import axios from 'axios'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { update } from "../store/userslice.js";
 import { useForm} from "react-hook-form"
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ export default function LoginForm()
         {
             dispatch(login());
             dispatch(update({userId:userdata.userId,username:userdata.username}))
+            
             navigate('../home')
         }
         }

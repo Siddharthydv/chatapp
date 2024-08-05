@@ -10,7 +10,7 @@ import getmessages from "../controllers/getmessages.js";
 export const userrouter=Router();
 userrouter.post('/check',(req,res)=>{res.send("check")})
 // userrouter.post('/logout',logout);
-userrouter.get('/search',search);
+userrouter.get('/search/:name',search);
 userrouter.get('/getfriends',getfriends);
 // userrouter.post('/sendrequest',sendrequest);
 userrouter.get('/receivedrequest',receivedrequest);

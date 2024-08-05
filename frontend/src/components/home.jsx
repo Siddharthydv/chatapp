@@ -3,7 +3,8 @@ import Sidebar from "./sidebar"
 import Bgsvg from "../assets/bg.svg"
 import { useSelector } from "react-redux"
 export default function Home(){
-    // const userdata=useSelector(state=>state.userdetails)
+    const userdata=useSelector(state=>state.userdetails)
+    // console.log(userdata)
     // console.log(useSelector(state=>state.authStatus)
     // console.log(userdata)
     return (
@@ -14,3 +15,5 @@ export default function Home(){
         </div>
     )
 }
+
+export const ws=new WebSocket('ws://localhost:3000');
