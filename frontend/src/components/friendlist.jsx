@@ -23,6 +23,7 @@ export default function Friendlist(){
             {<ul>
                 {friendlist.map(item=> (<li key={item.friendid} ><Friendcard friendname={item.friendname} friendid={item.friendid}/></li> )) }      
             </ul> }
+            
         </div>
         <Outlet/>
     </div>

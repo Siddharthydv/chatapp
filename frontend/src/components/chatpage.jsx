@@ -17,7 +17,7 @@ export default function Chatpage(){
       getmssg().then((mssg)=>{console.log(mssg)
         setmessages(mssg.data)
       })
-    },[])
+    },[friendid])
     ws.onmessage=(event)=>{
       const message=JSON.parse(event.data);
       // console.log(message)
@@ -28,7 +28,7 @@ export default function Chatpage(){
     return messages? (
         <div className="flex flex-col flex-grow h-full bg-neutral-950 border-box p-2">
           <Topbar name={friendname}/>
-        <div name="chatpart" className="flex flex-col flex-grow box-border p-4 space-y-3">  
+        <div name="chatpart" className="flex flex-col flex-grow box-border p-4 space-y-3 overflow-y-scroll ">  
           <Userchat mssg={messages}/>
         </div>
         <Bottombar setmessages={setmessages} friendid={friendid}/>

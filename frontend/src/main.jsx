@@ -36,7 +36,7 @@ const router=createBrowserRouter([
         path:'friends',
         element:<Friendlist/>,
         children:[{
-          path:"chatpage/:friendid",
+          path:"chatpage/:friendid/:friendname",
           element:<Chatpage/>
                   }
                   ]
