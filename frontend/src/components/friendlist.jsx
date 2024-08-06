@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import Mssgcard from "./Mssgcard";
+import Friendcard from "./Friendcard";
 import Bgsvg from "../assets/bg.svg"
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -16,12 +16,13 @@ export default function Friendlist(){
     },[])
     return friendlist?(
     <div  className="flex w-full " >
-        <div className=" h-full w-1/5 bg-slate-50 rounded-md  box-border p-1 space-y-1 overflow-scroll" >
-            {/* <Link to='chatpage'><button>clickme</button></Link>
-            <Link to='./'><button>goback</button></Link> */}
-            <ul>
-            {friendlist.map(item=> (<li key={item.friendid} ><Mssgcard  friendname={item.friendname} friendid={item.friendid}/></li> )) }      
-            </ul>
+        <div className="flex flex-col h-full w-3/12 bg-neutral-950 border-r border-gray-600 border-box p-3 space-y-3">
+            <div className="w-full h-7 border-b border-gray-800 border-box">
+                <h4 className="text-gray-400">Friends</h4>
+            </div>
+            {<ul>
+                {friendlist.map(item=> (<li key={item.friendid} ><Friendcard friendname={item.friendname} friendid={item.friendid}/></li> )) }      
+            </ul> }
         </div>
         <Outlet/>
     </div>

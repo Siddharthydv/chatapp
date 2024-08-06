@@ -8,7 +8,7 @@ export default function Home(){
     // console.log(useSelector(state=>state.authStatus)
     // console.log(userdata)
     return (
-        <div className=" flex h-screen border-2 border-black bg-cover bg-center" style={{backgroundImage:`url(${Bgsvg})`}}>
+        <div className='flex h-screen w-full bg-[#010104] border-2'>
             <Sidebar></Sidebar>
             <Outlet></Outlet>
             {/* <img src={Bgsvg} className="flex flex-grow"/> */}
