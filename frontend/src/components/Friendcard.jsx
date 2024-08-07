@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import usericon from "./icon.webp"
 export default function Friendcard({avatar='',friendname,friendid}){
-    console.log(friendname)
     const navigate=useNavigate()
     return (
         <div onClick={()=>{navigate(`chatpage/${friendid}/${friendname}`)}} className="flex w-full h-12 rounded-sm  hover:bg-[#3a31d8]  border-box p-2 border-r border-gray-800 border-b hover:border-black ">

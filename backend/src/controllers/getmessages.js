@@ -22,7 +22,7 @@ const getmessages=async (req,res)=>{
             ],
         },
     })
-    console.log((messagedocs))
+    // console.log((messagedocs))
     res.json(messagedocs);
 }
 

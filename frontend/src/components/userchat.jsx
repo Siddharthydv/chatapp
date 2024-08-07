@@ -1,7 +1,9 @@
+import { useEffect, useRef } from "react";
 import {useSelector} from "react-redux"
 import { v4 as uuidv4 } from 'uuid';
 export default  function Userchat({mssg=[]}){
-    const userid=1
+    // const userid=1
+    const userid=useSelector(state=>state.userdetails.userId)
     console.log(`userid=${userid}`)
     console.log(mssg)
     return (

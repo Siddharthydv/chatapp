@@ -19,44 +19,43 @@ const router=createBrowserRouter([
     element:<App/>,
     children:[
       {
-        path:'/login',
+        path:'login',
         element:<LoginForm/>
-      }
-    ]
-  },
-  {
-    path:'/signup',
-    element:<SignUp/>
-  },
-  {
-    path:'/home',
-    element:<Home/>,
-    children:[
-      {
-        path:'friends',
-        element:<Friendlist/>,
-        children:[{
-          path:"chatpage/:friendid/:friendname",
-          element:<Chatpage/>
-                  }
-                  ]
       },
       {
-        path:"search",
-        element:<Search/>,
-        // children:[
-        //  {
-        //   path:'',
-        //   element:<Searchlist/>
-        //  }
-        // ]
+        path:'signup',
+        element:<SignUp/>
       },
       {
-        path:'requests',
-        element:<Requests/>
+        path:'home',
+        element:<Home/>,
+        children:[
+          {
+            path:'friends',
+            element:<Friendlist/>,
+            children:[{
+              path:"chatpage/:friendid/:friendname",
+              element:<Chatpage/>
+                      }
+                      ]
+          },
+          {
+            path:"search",
+            element:<Search/>,
+            // children:[
+            //  {
+            //   path:'',
+            //   element:<Searchlist/>
+            //  }
+            // ]
+          },
+          {
+            path:'requests',
+            element:<Requests/>
+          }
+        ]
       }
-    ]
-  }
+    ]}
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
    <Provider store={store}>

@@ -1,17 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"
-import { WebSocketServer } from "ws";
 import axios from "axios"
 import { update } from "../store/userslice.js";
-import {ws} from './home.jsx'
+// import {ws} from './home.jsx'
+import { Wscontext } from "./home.jsx";
+import { useContext } from "react";
 export default function Sidebar()
 {
   const navigate=useNavigate();
   const dispatch=useDispatch();
+ const ws=useContext(Wscontext);
   // const userId=useSelector(state=>state.userdetails.userId)
   const logout=async ()=>{
     // const ws=new WebSocket('ws://localhost:3000');
-    
+   
       console.log('open');
       const message=JSON.stringify({type:"logout"})
       ws.send(message)
@@ -19,7 +21,7 @@ export default function Sidebar()
       document.cookie = "authToken"+`=;${expires}`;
       console.log(document.cookie)
       dispatch(update({userId:"",username:''}))
-      navigate('../')
+      navigate('../login')
     
   }
   const friendlist=async()=>{

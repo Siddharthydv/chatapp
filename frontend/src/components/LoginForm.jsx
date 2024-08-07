@@ -40,7 +40,7 @@ export default function LoginForm()
             </div>
             <div className=" rounded-lg flex flex-col  items-center border-2 border-solid h-2/6 space-y-2">
             <button type='submit' className="rounded-full border-2 border-solid border-green-700 w-2/5 bg-green-400"><h6 className="text-white">Submit</h6></button>
-            <h6 className="font-mono font-extralight">Dont't have an account? <Link to="/signup">Signup</Link></h6>
+            <h6 className="font-mono font-extralight">Dont't have an account? <Link to="signup">Signup</Link></h6>
             </div>
         </div>
        </div>

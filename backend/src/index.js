@@ -12,10 +12,16 @@ import logout from "./controllers/logout.js";
 import sendrequest from "./controllers/sendrequest.js";
 import messagehandler from "./controllers/messagehandler.js";
 import getmessages from "./controllers/getmessages.js";
-import { hasSubscribers } from "diagnostics_channel";
+
 const app=express();
+const allowedOrigins=['http://localhost:5173','http://localhost:5174']
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow only this origin
+    origin:function(origin,callback){
+        if(allowedOrigins.indexOf(origin)!==-1)
+            callback(null,true)
+        else
+            callback(new Error('not allowed by cors'))
+    }, // Allow only this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
     // allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true, // Allow credentials (cookies, authorization headers)
@@ -29,24 +35,31 @@ const wss=new WebSocketServer({server:Server});
 const Hashmap=new Map();
 wss.on('connection',(ws,req)=>{
     //verification
-             
+    let token;
+    if(req.headers.cookie)
+    token=(req.headers.cookie.split('='))[1]
+        // console.log(token)
+        if(!token){
+         ws.send("token absent")
+         ws.close()
+        }
+        try{
+        const result =jwt.verify(token,"secret");
+         
+         console.log(jwt.decode(token))
+         ws.userId=jwt.decode(token).userId;
+         console.log(ws.userId)
+        }catch(error){ws.send('invalid token')
+            console.log('reached')
+        }
+        Hashmap.set(ws.userId,ws);
+            console.log(Hashmap)
+            
+
     //sockets 
     ws.on('message',(message)=>{
-        const token=(req.headers.cookie.split('='))[1]
-            // console.log(token)
-            if(!token){
-             ws.send("token absent")
-             ws.close()
-            }
-            try{
-            const result =jwt.verify(token,"secret");
-             if(!result)
-                 res.send("Uncorrect token");
-             console.log(jwt.decode(token))
-             ws.userId=jwt.decode(token).userId;
-            }catch(error){ws.send('invalid token')}
-
-            Hashmap.set(ws.userid,ws);
+        
+            
         const parsedmessage=JSON.parse(message);
         console.log(parsedmessage)
         if(parsedmessage.type==="logout")
@@ -70,6 +83,8 @@ wss.on('connection',(ws,req)=>{
             messagehandler(ws.userId,recipientId,content)
             parsedmessage.senderId=ws.userId
             ws.send(JSON.stringify(parsedmessage))
+            const recipientws=Hashmap.get(recipientId)
+            recipientws.send(JSON.stringify(parsedmessage))
         }
             // webcheck(decmessage);
         // ws.send(decmessage.content)

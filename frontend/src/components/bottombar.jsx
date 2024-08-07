@@ -1,7 +1,12 @@
+import { useSelector } from "react-redux";
 import sendicon from "../assets/send.png"
-import {ws} from "./home.jsx"
+// import ws
+import { Wscontext } from "./home.jsx";
+import { useContext } from "react";
 export default function Bottombar({friendid,setmessages}){
+    const ws=useContext(Wscontext)
     async function sendmssg(){
+        
         const mssg=document.getElementById('default-input').value;
         console.log(mssg);
         console.log(open)
@@ -9,7 +14,9 @@ export default function Bottombar({friendid,setmessages}){
             recipientId:Number(`${friendid}`),
             content:mssg
         })
+       
         ws.send(JSON.stringify(message))
+        
     }
     return (
         <div name="inputbox" className="flex w-full h-16 border-t border-gray-600 justify-center items-center space-x-3">

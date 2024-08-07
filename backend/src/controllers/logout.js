@@ -5,6 +5,6 @@ import prisma from "../prisma/prismaclient.js";
         where:{id:userId},
         data:{token:null}
     })
-    return "loggedout"
+    console.log("loggedout")
 }
 export default logout

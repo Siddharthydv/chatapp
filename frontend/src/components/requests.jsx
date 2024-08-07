@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
-import {ws} from "./home.jsx"
+// import {ws} from "./home.jsx"
 import usericon from './icon.webp'
+import { Wscontext } from "./home";
 export default function Requests(){
     const [requests,setRequests]=useState();
     useEffect(()=>{
@@ -14,6 +15,7 @@ export default function Requests(){
     })
     },[])
     const acceptreq=(requestid)=>{
+        const ws=useContext(Wscontext)
         ws.send(JSON.stringify({
             type:"acceptreq",
             requestId:requestid
