@@ -5,6 +5,7 @@ import usericon from './icon.webp'
 import { Wscontext } from "./home";
 export default function Requests(){
     const [requests,setRequests]=useState();
+    const ws=useContext(Wscontext)
     useEffect(()=>{
         const getreq=async ()=>{
         const result=(await axios.get(`http://localhost:3000/user/receivedrequest`,{withCredentials:true})).data;
@@ -15,7 +16,7 @@ export default function Requests(){
     })
     },[])
     const acceptreq=(requestid)=>{
-        const ws=useContext(Wscontext)
+        
         ws.send(JSON.stringify({
             type:"acceptreq",
             requestId:requestid

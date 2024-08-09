@@ -46,25 +46,50 @@ wss.on('connection',(ws,req)=>{
         try{
         const result =jwt.verify(token,"secret");
          
-         console.log(jwt.decode(token))
+        //  console.log(jwt.decode(token))
          ws.userId=jwt.decode(token).userId;
-         console.log(ws.userId)
+        //  console.log(ws.userId)
         }catch(error){ws.send('invalid token')
             console.log('reached')
         }
         Hashmap.set(ws.userId,ws);
-            console.log(Hashmap)
-            
-
+            console.log(`hasmap size=${Hashmap.size}`)
+        wss.clients.forEach((client)=>{
+            // console.log(client.userId)
+            if(client.userId!==ws.userId)
+            client.send(JSON.stringify({
+                type:'onlinenotification',
+                onlineuserId:ws.userId
+            }))
+        })
+       
+        
     //sockets 
     ws.on('message',(message)=>{
         
             
         const parsedmessage=JSON.parse(message);
         console.log(parsedmessage)
+        if(parsedmessage.type==="initialnotif")
+        {
+            console.log(ws.userId)
+            ws.send(JSON.stringify({
+                type:"initialnotif",
+                userIds:Array.from(Hashmap.keys())
+            }))
+        }
         if(parsedmessage.type==="logout")
         {
-            logout(ws.userId);
+            logout(ws.userId);  
+            Hashmap.delete(ws.userId)
+            wss.clients.forEach((client)=>{
+                // console.log(client.userId)
+                if(client.userId!==ws.userId)
+                client.send(JSON.stringify({
+                    type:"offlinenotification",
+                    offlineuserId:ws.userId
+                }))
+            })
            
         }
         if(parsedmessage.type==="sendrequest")
@@ -84,7 +109,7 @@ wss.on('connection',(ws,req)=>{
             parsedmessage.senderId=ws.userId
             ws.send(JSON.stringify(parsedmessage))
             const recipientws=Hashmap.get(recipientId)
-            recipientws.send(JSON.stringify(parsedmessage))
+            recipientws?.send(JSON.stringify(parsedmessage))
         }
             // webcheck(decmessage);
         // ws.send(decmessage.content)

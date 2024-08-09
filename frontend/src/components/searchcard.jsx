@@ -3,13 +3,14 @@ import usericon from "./icon.webp"
 import { Wscontext } from "./home.jsx"
 // import { ws } from "./home.jsx"
 export default function Searchcard({name,id}){
+    const ws=useContext(Wscontext)
     const sendreq=async()=>{
         
         const message=JSON.stringify({
             type:"sendrequest",
             requesteeId:id
         })
-        const ws=useContext(Wscontext)
+       
         ws.send(message)
     }
     return (
