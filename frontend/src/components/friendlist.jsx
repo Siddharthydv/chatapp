@@ -42,7 +42,7 @@ export default function Friendlist(){
                 <h4 className="text-gray-400">Friends</h4>
             </div>
             {<ul>
-                {friendlist.map(item=> (<li key={item.friendid} ><Friendcard friendname={item.friendname} friendid={item.friendid} alreadyonline={alreadyonline}/></li> )) }      
+                {friendlist.map(item=> (<li key={item.friendid} ><Friendcard avatar={item.picurl} friendname={item.friendname} friendid={item.friendid} alreadyonline={alreadyonline}/></li> )) }      
             </ul> }
             
         </div>
