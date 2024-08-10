@@ -21,6 +21,8 @@ model Users{
   email     String   @unique
   createdAt DateTime @default(now())
   token     String?   
+  picurl    String?
+  Status    String?
   friendRequestsSent     FriendRequest[]    @relation("SentFriendRequests")
   friendRequestsReceived FriendRequest[]    @relation("ReceivedFriendRequests")
   friendshipsInitiated   Friendship[]       @relation("UserFriendInitiated")

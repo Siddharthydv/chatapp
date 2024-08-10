@@ -53,7 +53,7 @@ wss.on('connection',(ws,req)=>{
             console.log('reached')
         }
         Hashmap.set(ws.userId,ws);
-            console.log(`hasmap size=${Hashmap.size}`)
+            // console.log(`hasmap size=${Hashmap.size}`)
         wss.clients.forEach((client)=>{
             // console.log(client.userId)
             if(client.userId!==ws.userId)

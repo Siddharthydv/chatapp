@@ -3,13 +3,21 @@ export const userSlice=createSlice({
     name:"userdetails",
     initialState:{
         userId:"",
-        username:''
+        username:'',
+        picurl:"",
+        Status:""
     },
     reducers:{
         update:(state,action)=>{
-            console.log(action.payload)
-            state.userId=action.payload.userId
-            state.username=action.payload.username;
+            // console.log(action.payload)
+            if(action.payload.userId)
+                 state.userId=action.payload.userId
+            if(action.payload.username)
+                 state.username=action.payload.username;
+            if(action.payload.picurl)
+                state.picurl=action.payload.picurl
+            if(action.payload.Status)
+                state.Status=action.payload.Status        
         }
     }
    

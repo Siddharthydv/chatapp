@@ -13,6 +13,8 @@ import Chatpage from './components/chatpage.jsx'
 import Friendlist from './components/friendlist.jsx'
 import Search from './components/search.jsx'
 import Requests from './components/requests.jsx'
+import Profile from './components/profile.jsx'
+import Form from './components/form.jsx'
 const router=createBrowserRouter([
   {
     path:'/',
@@ -52,6 +54,14 @@ const router=createBrowserRouter([
           {
             path:'requests',
             element:<Requests/>
+          },
+          {
+            path:'profile',
+            element:<Profile/>
+          },
+          {
+            path:'update',
+            element:<Form/>
           }
         ]
       }
