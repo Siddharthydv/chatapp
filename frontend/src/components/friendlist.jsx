@@ -15,9 +15,9 @@ export default function Friendlist(){
             const list=await axios.get('http://localhost:3000/user/getfriends',{withCredentials:true})
             setList(list.data);
           }
-        getlist().then();
-        
+          getlist();
     },[])
+    console.log(friendlist)
     useEffect(()=>{
         if(ws.readyState===WebSocket.OPEN)
         ws.send(JSON.stringify({

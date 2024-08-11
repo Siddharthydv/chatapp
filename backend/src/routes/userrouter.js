@@ -10,6 +10,8 @@ import getmessages from "../controllers/getmessages.js";
 import profiledetails from "../controllers/profiledetails.js";
 import { upload } from "../middlewares/multer.js";
 import uploadimage from "../controllers/uploadimage.js";
+import { translateText } from "../controllers/translation.cjs";
+import getuser from "../controllers/getuser.js";
 export const userrouter=Router();
 userrouter.post('/check',(req,res)=>{res.send("check")})
 // userrouter.post('/logout',logout);
@@ -24,4 +26,6 @@ userrouter.get('/profiledetails',profiledetails)
 userrouter.put('/upload',(req,res,next)=>{
     req.user=req.body.id;next();
 },upload.single('profile-pic'),uploadimage)
+userrouter.get('/getuser/:friendid',getuser)
+// userrouter.post('/translate',translateText)
 

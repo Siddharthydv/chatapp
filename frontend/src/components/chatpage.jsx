@@ -10,6 +10,7 @@ import { Wscontext } from "./home";
 // import {ws} from "./home.jsx"
 export default function Chatpage(){
   const {friendid,friendname}=useParams();
+  const [avatar,setavatar]=useState();
   const [messages,setmessages]=useState([]);
   const scrollRef=useRef();
   useEffect(()=>{
@@ -21,6 +22,14 @@ export default function Chatpage(){
       getmssg().then((mssg)=>{console.log(mssg)
         setmessages(mssg.data)
       })
+    },[friendid])
+    useEffect(()=>{
+      const getuser=async()=>{
+        return await axios.get(`http://localhost:3000/user/getuser/${friendid}`,{withCredentials:true})
+      }
+      getuser().then((res)=>{
+        console.log(res)
+        setavatar(res.data.picurl)})
     },[friendid])
    const ws=useContext(Wscontext)
     ws.onmessage=(event)=>{
@@ -35,7 +44,7 @@ export default function Chatpage(){
     },[messages])
     return messages? (
         <div className="flex flex-col flex-grow h-full bg-neutral-950 border-box p-2">
-          <Topbar name={friendname}/>
+          <Topbar name={friendname} imageurl={avatar}/>
         <div name="chatpart" ref={scrollRef} className="flex flex-col flex-grow box-border p-4 space-y-3 overflow-y-scroll ">  
           <Userchat mssg={messages}/>
         </div>

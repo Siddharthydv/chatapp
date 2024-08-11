@@ -2,11 +2,17 @@ import { useContext, useEffect, useRef, useState } from "react";
 import {useSelector} from "react-redux"
 import { v4 as uuidv4 } from 'uuid';
 import { Wscontext } from "./home.jsx";
+import axios from "axios"
 export default  function Userchat({mssg=[]}){
     // const userid=1
     const userid=useSelector(state=>state.userdetails.userId)
-    console.log(`userid=${userid}`)
-    console.log(mssg)
+    const lang=useSelector(state=>state.userdetails.lang);
+    const translate=async(content)=>{
+        const translation=await axios.post('http://localhost:3000/user/translate',{mssg:content,lang:lang})
+        console.log(translation)
+    }
+    // console.log(`userid=${userid}`)
+    // console.log(mssg)
     return (
         (mssg.map((mssg)=>{
             const key=uuidv4();

@@ -17,8 +17,8 @@ const getfriends=async (req,res)=>{
     })
     //from the recieved rows retreive the ids which are not=userid
     const friendprofiles=list.map(friend=>{
-       return  friend.user_id1===userid?{friendid:friend.user2.id,friendname:friend.user2.username}:
-       {friendid:friend.user1.id,friendname:friend.user1.username};
+       return  friend.user_id1===userid?{friendid:friend.user2.id,friendname:friend.user2.username,picurl:friend.user2.picurl}:
+       {friendid:friend.user1.id,friendname:friend.user1.username,picurl:friend.user1.picurl};
     })
     res.json(friendprofiles);
 }

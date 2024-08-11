@@ -5,7 +5,8 @@ export const userSlice=createSlice({
         userId:"",
         username:'',
         picurl:"",
-        Status:""
+        Status:"",
+        lang:"hi"
     },
     reducers:{
         update:(state,action)=>{
