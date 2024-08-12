@@ -7,11 +7,11 @@ import cookieParser from "cookie-parser"
 import acceptreq from "./controllers/acceptreq.js";
 import webcheck from "./webcheck.js";
 import jwt from "jsonwebtoken"
-import { ParseStatus } from "zod";
 import logout from "./controllers/logout.js";
 import sendrequest from "./controllers/sendrequest.js";
 import messagehandler from "./controllers/messagehandler.js";
 import getmessages from "./controllers/getmessages.js";
+
 
 const app=express();
 const allowedOrigins=['http://localhost:5173','http://localhost:5174']
@@ -33,6 +33,7 @@ app.use("/",mainrouter)
 const Server=http.createServer(app);
 const wss=new WebSocketServer({server:Server});
 const Hashmap=new Map();
+const busymap=new Map(); 
 wss.on('connection',(ws,req)=>{
     //verification
     let token;
@@ -50,7 +51,7 @@ wss.on('connection',(ws,req)=>{
          ws.userId=jwt.decode(token).userId;
         //  console.log(ws.userId)
         }catch(error){ws.send('invalid token')
-            console.log('reached')
+            // console.log('reached')
         }
         Hashmap.set(ws.userId,ws);
             // console.log(`hasmap size=${Hashmap.size}`)
@@ -62,21 +63,31 @@ wss.on('connection',(ws,req)=>{
                 onlineuserId:ws.userId
             }))
         })
+
+        ws.send(JSON.stringify({
+            type:"status",
+            busyuserIds:Array.from(busymap.keys())
+        }))
        
         
     //sockets 
     ws.on('message',(message)=>{
         
-            
+          
         const parsedmessage=JSON.parse(message);
         console.log(parsedmessage)
         if(parsedmessage.type==="initialnotif")
         {
-            console.log(ws.userId)
+            // console.log(ws.userId)
             ws.send(JSON.stringify({
                 type:"initialnotif",
                 userIds:Array.from(Hashmap.keys())
             }))
+            ws.send(JSON.stringify({
+                type:"alreadybusy",
+                busyuserIds:Array.from(busymap.keys())
+            }))
+            
         }
         if(parsedmessage.type==="logout")
         {
@@ -111,6 +122,30 @@ wss.on('connection',(ws,req)=>{
             const recipientws=Hashmap.get(recipientId)
             recipientws?.send(JSON.stringify(parsedmessage))
         }
+        if(parsedmessage.type==='busy')
+        {
+            wss.clients.forEach((client)=>{
+                // console.log(client.userId)
+                if(client.userId!==ws.userId)
+                client.send(JSON.stringify({
+                    type:"busynotification",
+                    busyuserId:ws.userId
+                }))
+            })
+            busymap.set(ws.userId,ws)
+        }
+        if(parsedmessage.type==='notbusy')
+            {
+                wss.clients.forEach((client)=>{
+                    // console.log(client.userId)
+                    if(client.userId!==ws.userId)
+                    client.send(JSON.stringify({
+                        type:"nonbusynotification",
+                        notbusyuserId:ws.userId
+                    }))
+                })
+                busymap.delete(ws.userId)
+            }
             // webcheck(decmessage);
         // ws.send(decmessage.content)
     })

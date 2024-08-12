@@ -10,6 +10,7 @@ export default function Friendlist(){
     const ws=useContext(Wscontext)
     const[friendlist,setList]=useState()
     const [alreadyonline,setonline]=useState();
+    const [alreadybusy,setbusy]=useState();
         useEffect(()=>{
         const getlist=async()=>{
             const list=await axios.get('http://localhost:3000/user/getfriends',{withCredentials:true})
@@ -34,6 +35,23 @@ export default function Friendlist(){
         return () => {
             ws.removeEventListener('message', handler)};
     },[ws])
+
+
+    //busy people handler
+    useEffect(()=>{
+        
+        const busyhandler=async(event)=>{
+                const message=JSON.parse(event.data)
+                if(message.type==='alreadybusy'){
+                    console.log(`busyids=${message.busyuserIds}`)
+                    setbusy(message.busyuserIds)
+                }
+            }
+            ws.addEventListener('message',busyhandler);
+            return () => {
+                ws.removeEventListener('message', busyhandler)
+        }
+    },[ws])
   
     return friendlist?(
     <div  className="flex w-full " >
@@ -42,7 +60,7 @@ export default function Friendlist(){
                 <h4 className="text-gray-400">Friends</h4>
             </div>
             {<ul>
-                {friendlist.map(item=> (<li key={item.friendid} ><Friendcard avatar={item.picurl} friendname={item.friendname} friendid={item.friendid} alreadyonline={alreadyonline}/></li> )) }      
+                {friendlist.map(item=> (<li key={item.friendid} ><Friendcard avatar={item.picurl} friendname={item.friendname} friendid={item.friendid} alreadyonline={alreadyonline} alreadybusy={alreadybusy}/></li> )) }      
             </ul> }
             
         </div>

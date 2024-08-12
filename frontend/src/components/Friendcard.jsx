@@ -4,8 +4,10 @@ import { useContext, useEffect } from "react";
 import { Wscontext } from "./home";
 import { useState } from "react";
 import greendot from "./greendot.svg"
-export default function Friendcard({avatar='',friendname,friendid,alreadyonline}){
+import yellowdot from "../assets/yellowdot.svg"
+export default function Friendcard({avatar='',friendname,friendid,alreadyonline,alreadybusy}){
     const[onlineId,setOnlineId]=useState(alreadyonline);
+    const[busyId,setbusyId]=useState(alreadybusy);
     // console.log(alreadyonline)
     const ws=useContext(Wscontext)
     // console.log(ws)
@@ -34,13 +36,49 @@ export default function Friendcard({avatar='',friendname,friendid,alreadyonline}
                 ws.removeEventListener('message', handleMessage);
             };
     },[])
-    
+
+
+    //busyhandler
+    useEffect(()=>{
+        // ws.send(JSON.stringify({
+        //     type:"initialnotif",
+        // }))
+        // Define the message handler
+        const busyhandler = (event) => {
+            const message = JSON.parse(event.data);
+            if (message.type === 'busynotification') {
+                setbusyId((prev) => [...new Set([...prev, message.busyuserId])]);
+            }
+            else if(message.type==="nonbusynotification"){
+                console.log(`ye=${busyId}`)
+                setbusyId((prev)=>prev.filter(id => id !== message.notbusyuserId));
+            }
+            // else if(message.type==='initialnotif'){
+            //     console.log(message.userIds)
+            // }
+        };
+        ws.addEventListener('message', busyhandler);
+
+        // Cleanup the event handler when the component unmounts
+        return () => {
+            ws.removeEventListener('message', busyhandler);
+        };
+    },[])
     const online=(friendid)=>{
         // console.log("online")
         if(onlineId.indexOf(friendid)!==-1)
             return true;
         return false;
         console.log(...onlineId)
+    }
+
+    const busy=(friendid)=>{
+        // console.log("online")
+        console.log(busyId)
+        if(busyId.indexOf(friendid)!==-1)
+            return true;
+        return false;
+        // console.log(...onlineId)
     }
     const navigate=useNavigate()
     return (
@@ -51,6 +89,7 @@ export default function Friendcard({avatar='',friendname,friendid,alreadyonline}
         </div>   
         <div className="flex  flex-grow flex-row-reverse justify-center items-center">
             {online(friendid) && <img src={greendot} className="w-3 h-2"/> }
+            {busy(friendid) && <img src={yellowdot} className="w-10 h-10"/> }
         </div>
     </div>
     )

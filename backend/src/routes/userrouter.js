@@ -10,7 +10,7 @@ import getmessages from "../controllers/getmessages.js";
 import profiledetails from "../controllers/profiledetails.js";
 import { upload } from "../middlewares/multer.js";
 import uploadimage from "../controllers/uploadimage.js";
-import { translateText } from "../controllers/translation.cjs";
+import { translateText } from "../../../../../workspace/websockets/backend/translation.cjs";
 import getuser from "../controllers/getuser.js";
 export const userrouter=Router();
 userrouter.post('/check',(req,res)=>{res.send("check")})
