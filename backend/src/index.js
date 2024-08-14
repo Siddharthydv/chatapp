@@ -12,6 +12,7 @@ import sendrequest from "./controllers/sendrequest.js";
 import messagehandler from "./controllers/messagehandler.js";
 import getmessages from "./controllers/getmessages.js";
 import groupmessageHandler from "./controllers/groupcontrollers/groupmessageHandler.js";
+import prisma from "./prisma/prismaclient.js";
 
 
 const app=express();
@@ -152,13 +153,30 @@ wss.on('connection',(ws,req)=>{
             const userId=ws.userId;
             const groupId=parsedmessage.groupId;
             const content=parsedmessage.content
-            groupmessageHandler({userId,groupId,content}).then((res)=>{
-                if(res)
-                ws.send(JSON.stringify({
-                    type:"groupmessage",
-                    message:res
-                }))
+            groupmessageHandler({userId,groupId,content}).then((response)=>{
+                    const groupMembers=async(groupId)=>{
+                        const members=await prisma.groupMember.findMany({
+                            where:{groupId:groupId},
+                            select:{userId:true}
+                        })
+                        return members      //Array of objects containing userids  
+                    }
+                    groupMembers(groupId).then((res)=>{  //
+                    
+                        const groupmembers=res.map(user=>user.userId);
+                        const onlinews=Array.from(Hashmap.keys());
+                        const onlinemembers=onlinews.filter(id=>groupmembers.includes(id))
+                        onlinemembers.forEach(userId=>{
+                            Hashmap.get(userId).send(JSON.stringify({
+                                type:"groupmessage",
+                                content:response
+                            }))
+                        })
+                    })
             })
+
+            
+            
         }
             // webcheck(decmessage);
         // ws.send(decmessage.content)

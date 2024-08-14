@@ -5,10 +5,11 @@ import deleteGroup from "../controllers/groupcontrollers/deleteGroup.js";
 import getGroups from "../controllers/groupcontrollers/getGroups.js";
 import addMember from "../controllers/groupcontrollers/addMember.js";
 import getMessages from "../controllers/groupcontrollers/getMessages.js";
+import getMembers from "../controllers/groupcontrollers/getMembers.js";
 grouprouter.post('/createGroup',createGroup)
 grouprouter.delete('/deleteGroup',deleteGroup)
 grouprouter.get('/getGroups/:groupId',getGroups)
 grouprouter.post('/addMember',addMember)
 grouprouter.get('/getMessages/:groupId',getMessages)
-
+grouprouter.get('/getMembers/:groupId',getMembers)
 
