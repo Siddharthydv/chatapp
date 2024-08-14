@@ -11,22 +11,23 @@ import logout from "./controllers/logout.js";
 import sendrequest from "./controllers/sendrequest.js";
 import messagehandler from "./controllers/messagehandler.js";
 import getmessages from "./controllers/getmessages.js";
+import groupmessageHandler from "./controllers/groupcontrollers/groupmessageHandler.js";
 
 
 const app=express();
 const allowedOrigins=['http://localhost:5173','http://localhost:5174']
-app.use(cors({
-    origin:function(origin,callback){
-        if(allowedOrigins.indexOf(origin)!==-1)
-            callback(null,true)
-        else
-            callback(new Error('not allowed by cors'))
-    }, // Allow only this origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
-    // allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-    credentials: true, // Allow credentials (cookies, authorization headers)
-    // exposedHeaders: ['Content-Length', 'X-Custom-Header'], // Expose custom headers
-  }));
+// app.use(cors({
+//     origin:function(origin,callback){
+//         if(allowedOrigins.indexOf(origin)!==-1)
+//             callback(null,true)
+//         else
+//             callback(new Error('not allowed by cors'))
+//     }, // Allow only this origin
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
+//     // allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+//     credentials: true, // Allow credentials (cookies, authorization headers)
+//     // exposedHeaders: ['Content-Length', 'X-Custom-Header'], // Expose custom headers
+//   }));
 app.use(cookieParser())
 app.use(express.json())
 app.use("/",mainrouter)
@@ -146,6 +147,19 @@ wss.on('connection',(ws,req)=>{
                 })
                 busymap.delete(ws.userId)
             }
+        if(parsedmessage.type=='groupmessage')
+        {
+            const userId=ws.userId;
+            const groupId=parsedmessage.groupId;
+            const content=parsedmessage.content
+            groupmessageHandler({userId,groupId,content}).then((res)=>{
+                if(res)
+                ws.send(JSON.stringify({
+                    type:"groupmessage",
+                    message:res
+                }))
+            })
+        }
             // webcheck(decmessage);
         // ws.send(decmessage.content)
     })

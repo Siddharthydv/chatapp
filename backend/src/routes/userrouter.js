@@ -12,6 +12,7 @@ import { upload } from "../middlewares/multer.js";
 import uploadimage from "../controllers/uploadimage.js";
 import { translateText } from "../../../../../workspace/websockets/backend/translation.cjs";
 import getuser from "../controllers/getuser.js";
+import { grouprouter } from "./grouprouter.js";
 export const userrouter=Router();
 userrouter.post('/check',(req,res)=>{res.send("check")})
 // userrouter.post('/logout',logout);
@@ -28,4 +29,6 @@ userrouter.put('/upload',(req,res,next)=>{
 },upload.single('profile-pic'),uploadimage)
 userrouter.get('/getuser/:friendid',getuser)
 // userrouter.post('/translate',translateText)
+
+userrouter.use('/group',grouprouter)
 
