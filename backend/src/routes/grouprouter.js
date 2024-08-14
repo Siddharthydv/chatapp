@@ -8,7 +8,7 @@ import getMessages from "../controllers/groupcontrollers/getMessages.js";
 import getMembers from "../controllers/groupcontrollers/getMembers.js";
 grouprouter.post('/createGroup',createGroup)
 grouprouter.delete('/deleteGroup',deleteGroup)
-grouprouter.get('/getGroups/:groupId',getGroups)
+grouprouter.get('/getGroups',getGroups)
 grouprouter.post('/addMember',addMember)
 grouprouter.get('/getMessages/:groupId',getMessages)
 grouprouter.get('/getMembers/:groupId',getMembers)

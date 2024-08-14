@@ -1,6 +1,6 @@
 import prisma from "../../prisma/prismaclient.js";
 const createGroup=async (req,res)=>{
-    const createdbyId=req.body.userId;
+    const createdbyId=req.body.id;
     const name=req.body.name;
 
     const newgroup=await prisma.groups.create({

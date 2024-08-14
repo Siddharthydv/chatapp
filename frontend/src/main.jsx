@@ -15,6 +15,7 @@ import Search from './components/search.jsx'
 import Requests from './components/requests.jsx'
 import Profile from './components/profile.jsx'
 import Form from './components/form.jsx'
+import GroupList from './components/group/GroupList.jsx'
 const router=createBrowserRouter([
   {
     path:'/',
@@ -44,12 +45,6 @@ const router=createBrowserRouter([
           {
             path:"search",
             element:<Search/>,
-            // children:[
-            //  {
-            //   path:'',
-            //   element:<Searchlist/>
-            //  }
-            // ]
           },
           {
             path:'requests',
@@ -62,6 +57,15 @@ const router=createBrowserRouter([
           {
             path:'update',
             element:<Form/>
+          },
+          {
+            path:'groups',
+            element:<GroupList/>,
+            children:[
+              {
+                path:'groupchat/:groupid/:groupname'
+              }
+            ]
           }
         ]
       }
