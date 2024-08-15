@@ -6,7 +6,8 @@ const search=async (req,res)=>{
         where:{username:searched_name},
         select:{
             id:true,
-            username:true
+            username:true,
+            picurl:true
         }
     })
     if(!profile)

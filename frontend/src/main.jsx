@@ -16,6 +16,7 @@ import Requests from './components/requests.jsx'
 import Profile from './components/profile.jsx'
 import Form from './components/form.jsx'
 import GroupList from './components/group/GroupList.jsx'
+import Groupchat from './components/group/Groupchat.jsx'
 const router=createBrowserRouter([
   {
     path:'/',
@@ -63,7 +64,8 @@ const router=createBrowserRouter([
             element:<GroupList/>,
             children:[
               {
-                path:'groupchat/:groupid/:groupname'
+                path:'groupchat/:groupid/:groupname',
+                element:<Groupchat/>
               }
             ]
           }
