@@ -151,25 +151,32 @@ wss.on('connection',(ws,req)=>{
         if(parsedmessage.type=='groupmessage')
         {
             const userId=ws.userId;
-            const groupId=parsedmessage.groupId;
+            const username=parsedmessage.username
+            const groupId=Number(parsedmessage.groupId);
             const content=parsedmessage.content
             groupmessageHandler({userId,groupId,content}).then((response)=>{
+                    response.user={username:username}
+                    console.log(response)
                     const groupMembers=async(groupId)=>{
                         const members=await prisma.groupMember.findMany({
                             where:{groupId:groupId},
                             select:{userId:true}
                         })
                         return members      //Array of objects containing userids  
-                    }
+            }
                     groupMembers(groupId).then((res)=>{  //
-                    
+                        console.log(res)
                         const groupmembers=res.map(user=>user.userId);
                         const onlinews=Array.from(Hashmap.keys());
                         const onlinemembers=onlinews.filter(id=>groupmembers.includes(id))
                         onlinemembers.forEach(userId=>{
                             Hashmap.get(userId).send(JSON.stringify({
                                 type:"groupmessage",
-                                content:response
+                                content:response.content,
+                                id:response.id,
+                                userId:response.userId,
+                                groupId:response.groupId,
+                                user:response.user
                             }))
                         })
                     })

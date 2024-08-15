@@ -8,7 +8,8 @@ const getMembers=async(req,res)=>{
             user:{
                 select:{
                     id:true,
-                    username:true
+                    username:true,
+                    picurl:true
                 }
             }
         }
