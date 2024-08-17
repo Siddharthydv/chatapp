@@ -28,7 +28,7 @@ export default function Home(){
     const ws=new WebSocket('ws://localhost:3000')
     return (
         <Wscontext.Provider value={ws}>
-        <div className='flex h-screen w-full bg-[#010104] border-2'>
+        <div className='flex h-screen w-full bg-[#010104]'>
             <Sidebar></Sidebar>
             <Outlet></Outlet>
             {/* <img src={Bgsvg} className="flex flex-grow"/> */}
