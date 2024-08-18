@@ -113,12 +113,23 @@ wss.on('connection',(ws,req)=>{
             {
                 acceptreq(parsedmessage.requestId);
             }
+        if(parsedmessage.type==='togglevanish')
+        {
+            const recipientId=Number(parsedmessage.recipientId);
+            console.log(parsedmessage)
+            const recipientws=Hashmap.get(recipientId)
+            recipientws.send(JSON.stringify({
+                type:'togglevanish'
+            }))
+        }
         if(parsedmessage.type==="message")
         {
-            console.log(ws.userId)
+            console.log(parsedmessage)
             const recipientId=parsedmessage.recipientId;
             const content=parsedmessage.content;
-            messagehandler(ws.userId,recipientId,content)
+            const vanish=parsedmessage.vanish;
+            if(!vanish){
+                messagehandler(ws.userId,recipientId,content);}
             parsedmessage.senderId=ws.userId
             ws.send(JSON.stringify(parsedmessage))
             const recipientws=Hashmap.get(recipientId)

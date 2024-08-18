@@ -5,7 +5,7 @@ import sendicon from "../assets/send.png"
 import { Wscontext } from "./home.jsx";
 import { useContext,useState } from "react";
 import emojicon from "../assets/emoji.svg"
-export default function Bottombar({friendid,setmessages}){
+export default function Bottombar({friendid,setmessages,vanish}){
     const[showPicker,setPicker]=useState(false);
     const ws=useContext(Wscontext)
     async function sendmssg(){
@@ -14,6 +14,7 @@ export default function Bottombar({friendid,setmessages}){
         console.log(mssg);
         console.log(open)
         const message=({type:"message",
+            vanish:vanish?true:false,
             recipientId:Number(`${friendid}`),
             content:mssg
         })

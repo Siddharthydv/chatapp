@@ -3,7 +3,7 @@ import prisma from "../prisma/prismaclient.js"
 import fs from "fs"
 const uploadimage=async(req,res)=>{
    // console.log(req.user)
-   //  console.log(req.file)
+    console.log(req.file)
    let response;
    let status;
    if(req.file){
