@@ -5,15 +5,13 @@ import mainrouter from "./routes/mainrouter.js"
 import cors from 'cors'
 import cookieParser from "cookie-parser"
 import acceptreq from "./controllers/acceptreq.js";
-import webcheck from "./webcheck.js";
 import jwt from "jsonwebtoken"
 import logout from "./controllers/logout.js";
 import sendrequest from "./controllers/sendrequest.js";
 import messagehandler from "./controllers/messagehandler.js";
-import getmessages from "./controllers/getmessages.js";
 import groupmessageHandler from "./controllers/groupcontrollers/groupmessageHandler.js";
 import prisma from "./prisma/prismaclient.js";
-
+import dotenv from 'dotenv'
 
 const app=express();
 const allowedOrigins=['http://localhost:5173','http://localhost:5174']
@@ -201,7 +199,7 @@ wss.on('connection',(ws,req)=>{
     })
 })
 
-
-Server.listen(3000)
+dotenv.config()
+Server.listen(process.env.PORT)
 
 

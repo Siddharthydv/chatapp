@@ -1,16 +1,12 @@
 import { Router } from "express";
-import  logout  from "../controllers/logout.js";
 import getfriends from "../controllers/getfriends.js";
-import sendrequest from "../controllers/sendrequest.js";
 import receivedrequest from "../controllers/receivedrequest.js";
-import acceptreq from "../controllers/acceptreq.js";
 import rejectreq from "../controllers/rejectreq.js";
 import search from "../controllers/search.js";
 import getmessages from "../controllers/getmessages.js";
 import profiledetails from "../controllers/profiledetails.js";
 import { upload } from "../middlewares/multer.js";
 import uploadimage from "../controllers/uploadimage.js";
-import { translateText } from "../../../../../workspace/websockets/backend/translation.cjs";
 import getuser from "../controllers/getuser.js";
 import { grouprouter } from "./grouprouter.js";
 export const userrouter=Router();
